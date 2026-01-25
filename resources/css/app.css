@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans:
+        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+
+@layer base {
+    /* Focus on strengthening structural accessibility without breaking layout */
+    .thick-border {
+        border-width: 2px !important;
+        border-color: #e5e7eb !important; /* gray-200 */
+    }
+
+    /* Input fields reinforcement - more targeted */
+    input, textarea, select {
+        border-width: 2px !important;
+        border-color: #e5e7eb !important;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #7e22ce !important; /* purple-700 */
+        outline: none;
+    }
+
+    /* Dashboard cards specific strengthening */
+    .stat-card {
+        border-width: 2px !important;
+        border-color: #e5e7eb !important;
+    }
+}
+
+@layer utilities {
+    /* Custom Scrollbar for better visibility */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f3f4f6;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+    }
+}
