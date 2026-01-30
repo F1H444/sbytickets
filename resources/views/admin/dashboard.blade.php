@@ -33,7 +33,8 @@
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Pendapatan</p>
-                            <h3 class="text-3xl font-black text-gray-900 mt-2">Rp 0</h3>
+                            <h3 class="text-3xl font-black text-gray-900 mt-2">Rp
+                                {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
                         </div>
                         <div class="p-2.5 bg-purple-50 text-purple-600 rounded-xl">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,7 +49,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
-                        <span>+0% dari bulan lalu</span>
+                        <span>{{ $revenueGrowth >= 0 ? '+' : '' }}{{ number_format($revenueGrowth, 1) }}% dari bulan
+                            lalu</span>
                     </div>
                 </div>
             </div>
@@ -63,7 +65,8 @@
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Tiket Aktif</p>
-                            <h3 class="text-3xl font-black text-gray-900 mt-2">0</h3>
+                            <h3 class="text-3xl font-black text-gray-900 mt-2">
+                                {{ number_format($activeTicketsCount, 0, ',', '.') }}</h3>
                         </div>
                         <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,7 +77,7 @@
                         </div>
                     </div>
                     <div class="mt-4 flex items-center text-xs font-medium text-gray-400">
-                        <span>Tidak ada pesanan aktif</span>
+                        <span>{{ $activeTicketsCount > 0 ? $activeTicketsCount . ' tiket siap digunakan' : 'Tidak ada pesanan aktif' }}</span>
                     </div>
                 </div>
             </div>
@@ -89,7 +92,8 @@
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Pengunjung</p>
-                            <h3 class="text-3xl font-black text-gray-900 mt-2">0</h3>
+                            <h3 class="text-3xl font-black text-gray-900 mt-2">
+                                {{ number_format($totalVisitors, 0, ',', '.') }}</h3>
                         </div>
                         <div class="p-2.5 bg-green-50 text-green-600 rounded-xl">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,7 +108,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
-                        <span>+0 baru hari ini</span>
+                        <span>+{{ $latestOrders->where('created_at', '>=', now()->startOfDay())->count() }} baru hari
+                            ini</span>
                     </div>
                 </div>
             </div>
@@ -151,18 +156,71 @@
                     Lihat Laporan
                 </button>
             </div>
-            <div class="p-12 text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4">
-                    <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                        </path>
-                    </svg>
+            @if ($latestOrders->isEmpty())
+                <div class="p-12 text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4">
+                        <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                            </path>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-gray-900">Belum ada transaksi</h4>
+                    <p class="text-gray-500 text-sm mt-1 max-w-sm mx-auto">Setelah pelanggan mulai memesan tiket, transaksi
+                        mereka akan muncul di sini secara instan.</p>
                 </div>
-                <h4 class="text-lg font-bold text-gray-900">Belum ada transaksi</h4>
-                <p class="text-gray-500 text-sm mt-1 max-w-sm mx-auto">Setelah pelanggan mulai memesan tiket, transaksi
-                    mereka akan muncul di sini secara instan.</p>
-            </div>
+            @else
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr
+                                class="bg-gray-50/50 text-gray-500 font-bold uppercase tracking-widest text-[10px] border-b border-gray-100">
+                                <th class="px-6 py-4">Invoice / Pelanggan</th>
+                                <th class="px-6 py-4">Total</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-6 py-4">Tanggal</th>
+                                <th class="px-6 py-4"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            @foreach ($latestOrders as $order)
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-700 font-bold text-xs">
+                                                {{ substr($order->user->full_name, 0, 1) }}
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-gray-900">{{ $order->invoice_number }}</p>
+                                                <p class="text-[10px] text-gray-400 capitalize">
+                                                    {{ $order->user->full_name }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-bold text-gray-900">
+                                        Rp {{ number_format($order->total_amount, 0, ',', '.') }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider
+                                    {{ $order->payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                                            {{ $order->payment_status }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500 font-medium">
+                                        {{ $order->created_at->format('d M Y, H:i') }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="#"
+                                            class="text-purple-600 hover:text-purple-800 font-bold">Detail</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

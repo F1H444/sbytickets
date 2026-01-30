@@ -118,7 +118,7 @@
                 to_email: "{{ $order->user->email }}",
                 invoice_number: "{{ $order->invoice_number }}",
                 total_amount: "Rp {{ number_format($order->total_amount, 0, ',', '.') }}",
-                visit_date: "{{ \Carbon\Carbon::parse($order->tickets->first()->visit_date)->format('d M Y') }}",
+                order_date: "{{ \Carbon\Carbon::parse($order->tickets->first()->visit_date)->format('d M Y') }}",
                 ticket_count: "{{ $order->tickets->count() }}",
                 ticket_link: "{{ route('user.tickets.index') }}",
                 message: "Selamat! Pesanan tiket Anda di SBYTickets telah terverifikasi. Silakan akses tiket digital Anda melalui tautan di bawah ini."

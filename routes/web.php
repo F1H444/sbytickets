@@ -40,7 +40,9 @@ Route::post('/reset-password', [\App\Http\Controllers\Auth\ForgotPasswordControl
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
-    Route::resource('wisata', \App\Http\Controllers\Admin\WisataController::class);
+    Route::resource('wisata', \App\Http\Controllers\Admin\WisataController::class)->parameters([
+        'wisata' => 'wisata'
+    ]);
 });
 
 // User Panel Routes
@@ -56,4 +58,8 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(f
 
     // My Tickets
     Route::get('/tickets', [\App\Http\Controllers\User\TicketController::class, 'index'])->name('tickets.index');
+
+    // Profile Settings
+    Route::get('/profile', [\App\Http\Controllers\User\ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile', [\App\Http\Controllers\User\ProfileController::class, 'update'])->name('profile.update');
 });

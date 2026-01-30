@@ -49,10 +49,23 @@
                         class="p-1.5 {{ request()->routeIs('user.dashboard') ? 'bg-white text-purple-700 shadow-sm' : 'bg-gray-50 text-gray-400' }} rounded-lg group-hover:scale-110 transition-all">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                    </div>
+                    <span>Dasbor</span>
+                </a>
+
+                <a href="{{ route('user.profile') }}"
+                    class="flex items-center space-x-3 px-4 py-3.5 {{ request()->routeIs('user.profile') ? 'bg-purple-50 text-purple-700 font-bold ring-1 ring-purple-100 shadow-sm' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900 font-semibold' }} rounded-xl transition-all group">
+                    <div
+                        class="p-1.5 {{ request()->routeIs('user.profile') ? 'bg-white text-purple-700 shadow-sm' : 'bg-gray-50 text-gray-400' }} rounded-lg group-hover:scale-110 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </div>
-                    <span>Akun Saya</span>
+                    <span>Edit Profil</span>
                 </a>
 
                 <a href="{{ route('user.tickets.index') }}"
@@ -124,8 +137,13 @@
                             Pengguna</span>
                     </div>
                     <div
-                        class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-700 font-bold border-2 border-purple-100 shadow-sm">
-                        {{ substr(Auth::user()->full_name, 0, 1) }}
+                        class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-700 font-bold border-2 border-purple-100 shadow-sm overflow-hidden">
+                        @if (Auth::user()->profile_photo)
+                            <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Avatar"
+                                class="w-full h-full object-cover">
+                        @else
+                            {{ substr(Auth::user()->full_name, 0, 1) }}
+                        @endif
                     </div>
                 </div>
             </header>

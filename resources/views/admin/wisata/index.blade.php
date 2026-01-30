@@ -74,7 +74,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('admin.wisata.edit', $w->wisata_id) }}"
+                                        <a href="{{ route('admin.wisata.edit', $w) }}"
                                             class="p-2 text-gray-400 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -82,7 +82,7 @@
                                                 </path>
                                             </svg>
                                         </a>
-                                        <form action="{{ route('admin.wisata.destroy', $w->wisata_id) }}" method="POST"
+                                        <form action="{{ route('admin.wisata.destroy', $w) }}" method="POST"
                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus wisata ini?')">
                                             @csrf
                                             @method('DELETE')
